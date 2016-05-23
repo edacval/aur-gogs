@@ -9,7 +9,7 @@ User=gogs
 Group=gogs
 ExecStart=/usr/share/gogs/gogs web --config /etc/gogs/app.ini
 WorkingDirectory=/srv/gogs
-Environment=USER=gogs HOME=/home/gogs
+Environment=USER=gogs HOME=/srv/gogs
 
 [Install]
 WantedBy=multi-user.target

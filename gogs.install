@@ -3,7 +3,7 @@ pre_install() {
         groupadd --system gogs
     fi
     if ! getent passwd gogs >/dev/null; then
-        useradd -m --system -c 'gogs daemon users' -g gogs -s /bin/bash gogs
+        useradd -m -r -c 'gogs daemon users' -g gogs -d /srv/gogs -s /bin/bash gogs
     fi
 }
 
@@ -11,6 +11,7 @@ post_install(){
     mkdir -p /var/log/gogs
     chown -R gogs:gogs /var/log/gogs
     chown -R gogs:gogs /srv/gogs
+    chmod 0750 /srv/gogs
 
     systemctl daemon-reload
 }
