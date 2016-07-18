@@ -4,7 +4,7 @@
 _pkgname=gogs
 _gourl=github.com/gogits
 pkgname=gogs
-pkgver=0.9.46
+pkgver=0.9.48
 pkgrel=1
 pkgdesc="Self Hosted Git Service in the Go Programming Language. This is the latest release version."
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
@@ -16,8 +16,7 @@ optdepends=('sqlite: SQLite support'
             'postgresql: PostgreSQL support'
             'redis: Redis support'
             'memcached: MemCached support'
-            'openssh: GIT over SSH support'
-            'tidb-git: TiDB support')
+            'openssh: GIT over SSH support')
 makedepends=('go>=1.4' 'git' 'glide')
 conflicts=('gogs')
 provides=('gogs')
