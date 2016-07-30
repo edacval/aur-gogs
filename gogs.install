@@ -22,7 +22,11 @@ pre_upgrade(){
 
 post_upgrade() {
     systemctl daemon-reload
-    systemctl -q is-enabled gogs.service && systemctl start gogs.service
+    if ! [[ -f /etc/gogs/app.ini.pacnew ]] ; then
+        systemctl -q is-enabled gogs.service && systemctl start gogs.service
+    else
+        echo "/etc/gogs/app.ini{,.pacnew} needs merge"
+    fi
 }
 
 pre_remove() {
