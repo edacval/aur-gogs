@@ -3,8 +3,8 @@
 
 _pkgname=gogs
 _gourl=github.com/gogits
-pkgname=gogs
-pkgver=0.9.48
+pkgname=${_pkgname}
+pkgver=0.9.60
 pkgrel=1
 pkgdesc="Self Hosted Git Service in the Go Programming Language. This is the latest release version."
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
