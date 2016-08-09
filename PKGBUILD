@@ -2,10 +2,10 @@
 # Maintainer: Thomas Fanninger <thomas@fanninger.at>
 
 _pkgname=gogs
-_gourl=github.com/gogits
 pkgname=${_pkgname}
+_gourl=github.com/gogits
 pkgver=0.9.60
-pkgrel=1
+pkgrel=2
 pkgdesc="Self Hosted Git Service in the Go Programming Language. This is the latest release version."
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="http://gogs.io/"
