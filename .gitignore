@@ -1,5 +1,5 @@
-*
-!.gitignore
-!gogs.install
-!gogs.service
-!PKGBUILD
+pkg/
+src/
+gogs/
+go-bindata/
+*.pkg.tar.*

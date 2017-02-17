@@ -1,5 +1,5 @@
 [Unit]
-Description=Gogs (Go Git Service) server
+Description=Gogs (Go Git Service)
 After=syslog.target
 After=network.target
 
@@ -7,9 +7,10 @@ After=network.target
 Type=simple
 User=gogs
 Group=gogs
-ExecStart=/usr/share/gogs/gogs web --config /etc/gogs/app.ini
+Environment="GOGS_WORK_DIR=/srv/gogs USER=gogs HOME=/srv/gogs"
+ExecStart=/usr/bin/gogs web --config /etc/gogs/app.ini
 WorkingDirectory=/srv/gogs
-Environment=USER=gogs HOME=/srv/gogs
+Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

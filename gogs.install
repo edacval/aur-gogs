@@ -3,29 +3,29 @@ pre_install() {
         groupadd --system gogs
     fi
     if ! getent passwd gogs >/dev/null; then
-        useradd -m -r -c 'gogs daemon users' -g gogs -d /srv/gogs -s /bin/bash gogs
+        useradd -m -r -c 'Gogs service user' -g gogs -d /srv/gogs -s /bin/bash gogs
+        passwd -l gogs
     fi
+    systemd-tmpfiles --create gogs.conf
 }
 
 post_install(){
-    mkdir -p /var/log/gogs
-    chown -R gogs:gogs /var/log/gogs
-    chown -R gogs:gogs /srv/gogs
-    chmod 0750 /srv/gogs
-
     systemctl daemon-reload
 }
 
-pre_upgrade(){
+
+pre_upgrade() {
+    pre_install
     systemctl -q is-active gogs.service && systemctl stop gogs.service
 }
 
+
 post_upgrade() {
-    systemctl daemon-reload
+    post_install
     if ! [[ -f /etc/gogs/app.ini.pacnew ]] ; then
         systemctl -q is-enabled gogs.service && systemctl start gogs.service
     else
-        echo "/etc/gogs/app.ini{,.pacnew} needs merge"
+        echo "/etc/gogs/app.ini{,.pacnew} needs merge befores service start"
     fi
 }
 
@@ -42,4 +42,5 @@ post_remove() {
         groupdel gogs
     fi
     systemctl daemon-reload
+    echo "You will need to delete the directory /srv/gogs"
 }
