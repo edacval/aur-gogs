@@ -54,7 +54,7 @@ pre_upgrade() {
 post_upgrade() {
     post_install
 
-    local _CustConf=/srv/gogs/custom/conf/app.ini
+    local _CustConf=/srv/gogs/conf/app.ini
     local _OldConf=/etc/gogs/app.ini
 
     if  [[ -f ${_OldConf}.pacsave ]] && [[ ! -f ${_CustConf} ]] ; then
@@ -63,10 +63,11 @@ post_upgrade() {
         install -Dm0750 -d -o gogs -g gogs /srv/gogs/custom/conf
         install -Dm0640 -T -o gogs -g gogs ${_OldConf}.pacsave ${_CustConf}
         echo
-        echo "${_OldConf} moved to"
+        echo "${_OldConf} copied to"
         echo "${_CustConf}."
         echo "You may need to manually delete"
-        echo "an old config dir /etc/gogs"
+        echo "an old config file:"
+        echo "  ${_OldConf}"
         echo
     fi
     _start_if_enabled
