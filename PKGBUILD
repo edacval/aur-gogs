@@ -50,11 +50,6 @@ prepare() {
         -e '/^\[server\]/, /^\[/ s/^(STATIC_ROOT_PATH)\W.*$/\1 = \/usr\/share\/gogs/' \
         -e '/^\[log\]/,    /^\[/ s/^(ROOT_PATH)\W.*$/\1 = \/var\/log\/gogs/' \
         ;
-
-    ## Dirty hack
-    #sed -i vendor/github.com/go-xorm/xorm/logger.go \
-        #   -e '/DEFAULT_LOG_LEVEL/ s/core\.LOG_DEBUG/core.LOG_WARNING/' vendor/github.com/go-xorm/xorm/logger.go \
-        #   ;
 }
 
 
