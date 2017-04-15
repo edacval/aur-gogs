@@ -1,6 +1,6 @@
 # Contributor: Thomas Laroche <tho.laroche@gmail.com>
 # Contributor: Thomas Fanninger <thomas@fanninger.at>
-# Contributor surefire@cryptomile.net
+# Contributor: surefire@cryptomile.net
 # Maintainer: Edvinas Valatka <edacval@gmail.com>
 
 _pkgname=gogs
@@ -8,12 +8,12 @@ _team=github.com/gogits
 _gogsdir="src/${_team}/${_pkgname}"
 pkgname=${_pkgname}
 pkgver=0.11.4
-pkgrel=2
+pkgrel=3
 pkgdesc="Self Hosted Git Service in the Go Programming Language. This is the latest release version."
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="http://${_pkgname}.io/"
 license=('MIT')
-depends=('git' 'bash')
+depends=('git')
 options=('!buildflags' '!strip')
 optdepends=("sqlite: SQLite support"
             "mariadb: MariaDB support"
@@ -21,6 +21,7 @@ optdepends=("sqlite: SQLite support"
             "redis: Redis support"
             "memcached: MemCached support"
             "openssh: GIT over SSH support"
+            "bash: GIT over SSH support"
 )
 makedepends=('git' 'go' 'go-bindata' 'nodejs-less' 'sqlite')
 install=${_pkgname}.install
