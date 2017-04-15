@@ -13,26 +13,26 @@ pkgdesc="Self Hosted Git Service in the Go Programming Language. This is the lat
 arch=('i686' 'x86_64' 'armv6h' 'armv7h')
 url="http://${_pkgname}.io/"
 license=('MIT')
-depends=('git' 'sqlite' 'bash')
-conflicts=("${_pkgname}")
-provides=("${_pkgname}")
+depends=('git' 'bash')
 options=('!buildflags' '!strip')
-optdepends=(
-"mariadb: MariaDB support"
-"postgresql: PostgreSQL support"
-"redis: Redis support"
-"memcached: MemCached support"
-"openssh: GIT over SSH support"
+optdepends=("sqlite: SQLite support"
+            "mariadb: MariaDB support"
+            "postgresql: PostgreSQL support"
+            "redis: Redis support"
+            "memcached: MemCached support"
+            "openssh: GIT over SSH support"
 )
-makedepends=('go' 'git' 'nodejs-less')
+makedepends=('git' 'go' 'go-bindata-git' 'nodejs-less' 'sqlite')
 install=${_pkgname}.install
 
 source=(
-"git+https://${_team}/${_pkgname}.git#tag=v${pkgver}"
-"git+https://github.com/jteeuwen/go-bindata.git" #Because сommunity package is very outdated
-"${_pkgname}.service"
-"${_pkgname}.tmpfiles"
+        "git+https://${_team}/${_pkgname}.git#tag=v${pkgver}"
+        "${_pkgname}.service"
+        "${_pkgname}.tmpfiles"
 )
+sha512sums=('SKIP'
+            'c872a0c7e33c3385828af58633f194628098841adb32506fdb95d0554ecae2a472915d3fb4a964b44bf8f14e87516f50f77fbec9a3efd10bfb2f5246d294a186'
+            '658935dc129d41b4bfc205ea8e9c225122862431f8b96932942ec345bc23cc7b55644247a8844c1f66bfd16ee35fc9da766f62f07603cbe6d573102edb4222f8')
 
 prepare() {
     export GOPATH="$srcdir"
@@ -40,10 +40,7 @@ prepare() {
     mkdir -p ./src/${_team}
     mv    -t ./src/${_team}   ./${_pkgname}
 
-    mkdir -p ./src/github.com/jteeuwen
-    mv    -t ./src/github.com/jteeuwen ./go-bindata
-
-    cd "$_gogsdir"
+    cd "$srcdir/$_gogsdir"
 
     sed -E -i conf/app.ini \
         -e '0,             /^\[/ s/^(RUN_USER)\W.*$/\1 = gogs/' \
@@ -52,12 +49,8 @@ prepare() {
         ;
 }
 
-
 build() {
     export GOPATH="$srcdir"
-
-    cd "$srcdir/src/github.com/jteeuwen/go-bindata/go-bindata"
-    go install -v
 
     cd "$srcdir/$_gogsdir"
 
@@ -65,22 +58,16 @@ build() {
 }
 
 package() {
-    cd "$_gogsdir"
+    cd "$srcdir/$_gogsdir"
 
     rm -rf ./public/{less,config.codekit}
 
-    install -d "$pkgdir/usr/share/${_pkgname}"
+    install -Dm0644 ./conf/app.ini "$pkgdir/usr/share/${_pkgname}/conf/app.ini.default"
     cp     -rt "$pkgdir/usr/share/${_pkgname}" ./{templates,public}
 
     install -Dm0755 -t "$pkgdir/usr/bin"                 ./${_pkgname}
-
+    install -Dm0644 -t "$pkgdir/usr/share/licenses/gogs" ./LICENSE
     install -Dm0644 -t "$pkgdir/usr/lib/systemd/system"  "$srcdir/${_pkgname}.service"
 
     install -Dm0644 "$srcdir/${_pkgname}.tmpfiles" "$pkgdir/usr/lib/tmpfiles.d/${_pkgname}.conf"
-
 }
-
-sha512sums=('SKIP'
-            'SKIP'
-            'ae93c18970125e21e502d4833dbfb6867a55157ab8cc2dace120fb5ea5d86cea583f01b88dac2c56d9f059631c95e953df99f92e0def718946b348481ce2371f'
-            '658935dc129d41b4bfc205ea8e9c225122862431f8b96932942ec345bc23cc7b55644247a8844c1f66bfd16ee35fc9da766f62f07603cbe6d573102edb4222f8')
